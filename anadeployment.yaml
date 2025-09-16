@@ -1,50 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: treasure-ana
+  name: treasure-sebastian
   namespace: treasure-hunt
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: treasure-ana
+      app: treasure-sebastian
   template:
     metadata:
       labels:
-        app: treasure-ana
+        app: treasure-sebastian
     spec:
       containers:
-        - name: web
-          image: ghcr.io/fredyunivalle/treasure-new:latest
-          ports:
-            - containerPort: 80
-          env:
-            - name: TITLE
-              value: "Treasure Hunt — Fredy"
-            - name: STUDENT
-              value: "Fredy"
-            - name: SALT
-              value: "DS3univalle"
-            - name: KEY_HASH
-              value: "e03071406de634efb44ae42fb52a19523ac5646281b91de291133e2c37106da0"
-            - name: CLUE
-              valueFrom:
-                secretKeyRef:
-                  name: ana-clue
-                  key: CLUE
+      - name: web
+        image: ghcr.io/saldana07/treasure-new:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "Treasure Hunt — Sebastián Saldaña"
+        - name: STUDENT
+          value: "Sebastián Saldaña"
+        - name: SALT
+          value: "DS3univalle"
+        - name: KEY_HASH
+          value: "3ffeb0270990ab7cf66f3a33b26a8ca37cac8fa9dd9ed6b3d1eaea68d38d71e6"
+        - name: CLUE
+          valueFrom:
+            secretKeyRef:
+              name: sebastian-clue
+              key: CLUE
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: treasure-ana
+  name: treasure-sebastian
   namespace: treasure-hunt
 spec:
   selector:
-    app: treasure-ana
+    app: treasure-sebastian
   ports:
-    - name: http
-      port: 80
-      targetPort: 80
-      # nodePort: 31080   # (opcional) fija uno en el rango 30000–32767
+  - name: http
+    port: 80
+    targetPort: 80
   type: NodePort
-
