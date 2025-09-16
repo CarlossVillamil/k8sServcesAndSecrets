@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: treasure-sebastian
+  namespace: treasure-hunt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: treasure-sebastian
+  template:
+    metadata:
+      labels:
+        app: treasure-sebastian
+    spec:
+      containers:
+      - name: web
+        image: ghcr.io/saldana07/treasure-new:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "Treasure Hunt — Sebastián Saldaña"
+        - name: STUDENT
+          value: "Sebastián Saldaña"
+        - name: SALT
+          value: "DS3univalle"
+        - name: KEY_HASH
+          value: "3ffeb0270990ab7cf66f3a33b26a8ca37cac8fa9dd9ed6b3d1eaea68d38d71e6"
+        - name: CLUE
+          valueFrom:
+            secretKeyRef:
+              name: sebastian-clue
+              key: CLUE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: treasure-sebastian
+  namespace: treasure-hunt
+spec:
+  selector:
+    app: treasure-sebastian
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  type: NodePort
