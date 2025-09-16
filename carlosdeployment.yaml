@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: treasure-carlos
+  namespace: treasure-hunt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: treasure-carlos
+  template:
+    metadata:
+      labels:
+        app: treasure-carlos
+    spec:
+      containers:
+        - name: web
+          image: carlosvillamilgrisales/treasure-new:latest 
+          ports:
+            - containerPort: 80
+          env:
+            - name: TITLE
+              value: "Treasure Hunt — Carlos"
+            - name: STUDENT
+              value: "Carlos Villamil"
+            - name: SALT
+              value: "DS3univalle"
+            - name: KEY_HASH
+              value: "44ee97ad2907bda627aafcfcf95c6d0e86056d397362c3ac364fbecac341f319"
+            - name: CLUE
+              valueFrom:
+                secretKeyRef:
+                  name: carlos-clue
+                  key: CLUE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: treasure-carlos
+  namespace: treasure-hunt
+spec:
+  selector:
+    app: treasure-carlos
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  type: NodePort
