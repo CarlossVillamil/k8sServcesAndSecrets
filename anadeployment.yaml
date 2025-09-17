@@ -47,4 +47,3 @@ spec:
       targetPort: 80
       # nodePort: 31080   # (opcional) fija uno en el rango 30000–32767
   type: NodePort
-
