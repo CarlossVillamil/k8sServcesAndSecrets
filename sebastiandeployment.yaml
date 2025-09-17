@@ -26,7 +26,7 @@ spec:
         - name: SALT
           value: "DS3univalle"
         - name: KEY_HASH
-          value: "3ffeb0270990ab7cf66f3a33b26a8ca37cac8fa9dd9ed6b3d1eaea68d38d71e6"
+          value: "990a83c7dc1e125c57ca7b59bee5e48db4e44c95c224da50edac9bd28febc9ff"
         - name: CLUE
           valueFrom:
             secretKeyRef:
