@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: treasure-marulanda
+  namespace: treasure-hunt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: treasure-marulanda
+  template:
+    metadata:
+      labels:
+        app: treasure-marulanda
+    spec:
+      containers:
+        - name: web
+          image: torvald29/treasure-new:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: TITLE
+              value: "Treasure Hunt — Marulanda"
+            - name: STUDENT
+              value: "marulanda"
+            - name: SALT
+              value: "DS3univalle"
+            - name: KEY_HASH
+              value: "d74d298376c91c833787fea842d0bf2177af555f9fd973ef9c679dfc9bdc69c4"
+            - name: CLUE
+              valueFrom:
+                secretKeyRef:
+                  name: marulanda-clue
+                  key: CLUE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: treasure-marulanda
+  namespace: treasure-hunt
+spec:
+  selector:
+    app: treasure-marulanda
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      # nodePort: 31080   # (opcional) fija uno en el rango 30000–32767
+  type: NodePort
